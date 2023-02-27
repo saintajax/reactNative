@@ -20,7 +20,7 @@ const initialState = {
   password: "",
 };
 
-const LoginForm = () => {
+const LoginForm = ({ navigation }) => {
   const [dataForm, setDataForm] = useState(initialState);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [dimensions, setDimensions] = useState(
@@ -53,7 +53,7 @@ const LoginForm = () => {
   return (
     <TouchableWithoutFeedback onPress={hideKyeboard}>
       <ImageBackground
-        source={require("../image/bg.jpg")}
+        source={require("../../image/bg.jpg")}
         resizeMode="cover"
         style={styles.image}
       >
@@ -117,8 +117,12 @@ const LoginForm = () => {
             <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
               <Text style={styles.textBtn}>Зареєструватись</Text>
             </TouchableOpacity>
-
-            <Text style={styles.text}>Вже є акаунт? Увійти</Text>
+            <Text style={{ ...styles.text }}>
+              Вже є акаунт?
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text style={{ marginLeft: 4 }}>Увійти</Text>
+              </TouchableOpacity>
+            </Text>
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>
