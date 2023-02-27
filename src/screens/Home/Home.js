@@ -10,7 +10,7 @@ import Posts from "./Posts";
 import Profile from "./Profile";
 import CreatePost from "./CreatePost";
 
-const Home = ({ navigation, route }) => {
+const Home = () => {
   return (
     <MainTab.Navigator
       initialRouteName="Posts"
@@ -68,45 +68,47 @@ const Home = ({ navigation, route }) => {
       <MainTab.Screen
         name="CreatePost"
         component={CreatePost}
-        options={{
-          tabBarStyle: { display: "none" },
-          tabBarIcon: ({ focused, size, color, navigation }) => (
-            <View
-              style={{
-                width: 70,
-                height: 40,
-                backgroundColor: "#FF6C00",
-                borderRadius: 20,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Feather name="plus" size={size} color={"#fff"} />
-            </View>
-          ),
-          title: "Створити публікацію",
-          headerStyle: {
-            borderBottomWidth: 0.5,
-            borderBottomColor: "#212121CC",
-          },
-          headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontFamily: "Roboto-Medium",
-            color: "#212121",
-            fontSize: 17,
-            lineHeight: 22,
-          },
-          headerLeft: () => (
-            <Feather
-              name="arrow-left"
-              color="#212121CC"
-              size={24}
-              style={{ marginLeft: 16 }}
-              onPress={() => {
-                navigation.navigate("Posts");
-              }}
-            />
-          ),
+        options={({ navigation }) => {
+          return {
+            tabBarStyle: { display: "none" },
+            tabBarIcon: ({ focused, size, color }) => (
+              <View
+                style={{
+                  width: 70,
+                  height: 40,
+                  backgroundColor: "#FF6C00",
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Feather name="plus" size={size} color={"#fff"} />
+              </View>
+            ),
+            title: "Створити публікацію",
+            headerStyle: {
+              borderBottomWidth: 0.5,
+              borderBottomColor: "#212121CC",
+            },
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontFamily: "Roboto-Medium",
+              color: "#212121",
+              fontSize: 17,
+              lineHeight: 22,
+            },
+            headerLeft: () => (
+              <Feather
+                name="arrow-left"
+                color="#212121CC"
+                size={24}
+                style={{ marginLeft: 16 }}
+                onPress={() => {
+                  navigation.navigate("Posts");
+                }}
+              />
+            ),
+          };
         }}
       />
       <MainTab.Screen
