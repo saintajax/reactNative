@@ -1,10 +1,29 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import { View, StyleSheet } from "react-native";
 
-const Map = () => {
+const Map = ({ route }) => {
+  const { latitude, longitude } = route.params.location;
+
   return (
     <View style={styles.container}>
-      <Text>Map</Text>
+      <MapView
+        initialRegion={{
+          latitude,
+          longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        style={styles.map}
+      >
+        <Marker
+          coordinate={{
+            latitude,
+            longitude,
+          }}
+          title="location photo"
+        />
+      </MapView>
     </View>
   );
 };
@@ -14,7 +33,9 @@ export default Map;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  },
+  map: {
+    width: "100%",
+    height: "100%",
   },
 });

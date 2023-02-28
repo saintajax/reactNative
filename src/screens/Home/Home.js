@@ -6,14 +6,14 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 
 const MainTab = createBottomTabNavigator();
 
-import Posts from "./Posts";
+import PostsNav from "./PostNav";
 import Profile from "./Profile";
 import CreatePost from "./CreatePost";
 
 const Home = () => {
   return (
     <MainTab.Navigator
-      initialRouteName="Posts"
+      initialRouteName="PostsNav"
       screenOptions={{
         headerTitleAlign: "center",
         headerTitleStyle: {
@@ -39,8 +39,8 @@ const Home = () => {
       }}
     >
       <MainTab.Screen
-        name="Posts"
-        component={Posts}
+        name="PostsNav"
+        component={PostsNav}
         options={({ route }) => {
           const activeRoute = getFocusedRouteNameFromRoute(route);
           return {
@@ -104,7 +104,7 @@ const Home = () => {
                 size={24}
                 style={{ marginLeft: 16 }}
                 onPress={() => {
-                  navigation.navigate("Posts");
+                  navigation.navigate("PostsDef");
                 }}
               />
             ),
