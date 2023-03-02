@@ -23,6 +23,7 @@ const PostsDef = ({ navigation }) => {
         component={Comments}
         options={{
           title: "Коментарі",
+
           headerStyle: {
             borderBottomWidth: 0.5,
             borderBottomColor: "rgba(0, 0, 0, 0.3)",

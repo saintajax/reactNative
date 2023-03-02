@@ -12,6 +12,8 @@ import {
   TouchableWithoutFeedback,
   ImageBackground,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../redux/auth/operations";
 
 const initialState = {
   email: "",
@@ -21,6 +23,9 @@ const initialState = {
 const LoginForm = ({ navigation }) => {
   const [dataForm, setDataForm] = useState(initialState);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  const dispatch = useDispatch();
+
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
@@ -44,8 +49,8 @@ const LoginForm = ({ navigation }) => {
   const handleSubmit = () => {
     setIsKeyboardVisible(false);
     Keyboard.dismiss();
+    dispatch(authSignInUser(dataForm));
     setDataForm(initialState);
-    console.log(dataForm);
   };
 
   return (

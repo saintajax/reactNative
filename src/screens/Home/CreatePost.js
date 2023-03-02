@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -14,6 +15,9 @@ import { Camera } from "expo-camera";
 import * as Location from "expo-location";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+import { storage, db } from "../../../friebase/config";
 
 const initialState = {
   name: "",
@@ -28,6 +32,8 @@ const CreatePost = ({ navigation }) => {
   const [photo, setPhoto] = useState(null);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const { userId, login } = useSelector((state) => state.auth);
 
   Camera.requestCameraPermissionsAsync();
 
@@ -65,8 +71,43 @@ const CreatePost = ({ navigation }) => {
     }
   };
 
+  const uploadPhotoToServer = async () => {
+    try {
+      const response = await fetch(photo);
+      const file = await response.blob();
+      const uniquePostId = Date.now().toString();
+      const pathPhoto = `postImage/${uniquePostId}.jpg`;
+      const photoRef = ref(storage, pathPhoto);
+      const uploadPhoto = await uploadBytes(photoRef, file, {
+        contentType: "image/jpeg",
+      });
+      const processedPhoto = await getDownloadURL(uploadPhoto.ref);
+      return processedPhoto;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const uploadPostToServer = async () => {
+    try {
+      const photoUrl = await uploadPhotoToServer();
+
+      const docRef = await addDoc(collection(db, "posts"), {
+        photoUrl,
+        location: state.location,
+        coords: state.coords,
+        name: state.name,
+        userId,
+        login,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const sendPost = async () => {
-    navigation.navigate("Posts", { state });
+    await uploadPostToServer();
+    navigation.navigate("Posts");
     setState(initialState);
   };
 

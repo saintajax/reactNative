@@ -7,17 +7,23 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { collection, onSnapshot } from "firebase/firestore";
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { db } from "../../../friebase/config";
 
 const Posts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
 
+  const getAllPosts = async () => {
+    onSnapshot(collection(db, "posts"), (doc) => {
+      setPosts(doc.docs.map((el) => ({ ...el.data(), idPost: el.id })));
+    });
+  };
+
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params.state]);
-    }
-  }, [route.params]);
+    getAllPosts();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -27,12 +33,14 @@ const Posts = ({ route, navigation }) => {
         renderItem={(el) => {
           return (
             <View style={styles.postWrapper}>
-              <Image source={{ uri: el.item.photo }} style={styles.img} />
+              <Image source={{ uri: el.item.photoUrl }} style={styles.img} />
               <Text style={styles.postName}>{el.item.name}</Text>
               <View style={styles.buttonsWrapper}>
                 <TouchableOpacity
                   style={{ ...styles.commentsBtn, flex: 0.2 }}
-                  onPress={() => navigation.navigate("Comments")}
+                  onPress={() =>
+                    navigation.navigate("Comments", { postId: el.item.idPost })
+                  }
                 >
                   <Text style={{ ...styles.text, textAlign: "left" }}>
                     <Feather name="message-circle" size={24} color="#BDBDBD" />

@@ -3,9 +3,10 @@ import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
 
-import useRoute from "./src/hooks/router";
+import { Provider } from "react-redux";
+import { store } from "./src/screens/redux/store";
+import Main from "./src/components/main";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -14,7 +15,6 @@ export default function App() {
     "Roboto-Regular": require("./src/fonts/Roboto/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./src/fonts/Roboto/Roboto-Medium.ttf"),
   });
-  const routing = useRoute(true);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -27,8 +27,10 @@ export default function App() {
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-      <NavigationContainer>{routing}</NavigationContainer>
-    </View>
+    <Provider store={store}>
+      <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+        <Main />
+      </View>
+    </Provider>
   );
 }

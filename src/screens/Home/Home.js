@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
@@ -9,8 +10,15 @@ const MainTab = createBottomTabNavigator();
 import PostsNav from "./PostNav";
 import Profile from "./Profile";
 import CreatePost from "./CreatePost";
+import { authSignOutUser } from "../redux/auth/operations";
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  const signOut = () => {
+    dispatch(authSignOutUser());
+  };
+
   return (
     <MainTab.Navigator
       initialRouteName="PostsNav"
@@ -60,6 +68,7 @@ const Home = () => {
                 color="#BDBDBD"
                 size={24}
                 style={{ marginRight: 10 }}
+                onPress={signOut}
               />
             ),
           };
@@ -104,7 +113,7 @@ const Home = () => {
                 size={24}
                 style={{ marginLeft: 16 }}
                 onPress={() => {
-                  navigation.navigate("PostsDef");
+                  navigation.navigate("PostsNav");
                 }}
               />
             ),

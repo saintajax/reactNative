@@ -13,6 +13,8 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authSignUpUser } from "../redux/auth/operations";
 
 const initialState = {
   login: "",
@@ -23,6 +25,9 @@ const initialState = {
 const LoginForm = ({ navigation }) => {
   const [dataForm, setDataForm] = useState(initialState);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  const dispatch = useDispatch();
+
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
@@ -46,8 +51,9 @@ const LoginForm = ({ navigation }) => {
   const handleSubmit = () => {
     setIsKeyboardVisible(false);
     Keyboard.dismiss();
-    setDataForm(initialState);
+    dispatch(authSignUpUser(dataForm));
     console.log(dataForm);
+    setDataForm(initialState);
   };
 
   return (
